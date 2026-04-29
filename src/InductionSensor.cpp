@@ -1,0 +1,13 @@
+#include <P1AM.h>
+#include "MecLabLibrary.h"
+
+InductionSensor::InductionSensor(const int slot, const int port)
+  : _slot(slot), _port(port) {}
+
+bool InductionSensor::read() {
+  return P1.readDiscrete(_slot, _port);
+}
+
+int InductionSensor::getPort() {
+  return _port;
+}

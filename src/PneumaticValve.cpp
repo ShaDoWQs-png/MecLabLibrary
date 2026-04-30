@@ -21,8 +21,6 @@ void PneumaticValve::update() {
     case ValveState::EXTENDING:
       solA.extend();
       solB.retract();
-      
-      //Serial.println("i made it!");
 
       if(reedSwitches) {
         if(P1.readDiscrete(_slot, reedExt->getPort())) {
@@ -87,9 +85,35 @@ void PneumaticValve::extend() {
   lastMoveCall = ValveState::EXTENDING;
 }
 
+void PneumaticValve::extend(int durationMs) {
+  ValveState preState = state;
+  Timer.cancel(_timerHandle); // Cancel any preexisting timer
+
+  updateState(ValveState::EXTENDING);
+  lastMoveCall = ValveState::EXTENDING;
+
+  _timerHandle = Timer.start(durationMs, [this, preState]() {
+    updateState(preState);
+    lastMoveCall = preState;
+  });
+}
+
 void PneumaticValve::retract() {
   updateState(ValveState::RETRACTING);
   lastMoveCall = ValveState::RETRACTING;
+}
+
+void PneumaticValve::retract(int durationMs) {
+  ValveState preState = state;
+  Timer.cancel(_timerHandle); // Cancel any preexisting timer
+
+  updateState(ValveState::RETRACTING);
+  lastMoveCall = ValveState::RETRACTING;
+
+  _timerHandle = Timer.start(durationMs, [this, preState]() {
+    updateState(preState);
+    lastMoveCall = preState;
+  });
 }
 
 void PneumaticValve::off() {

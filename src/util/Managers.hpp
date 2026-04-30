@@ -2,6 +2,9 @@
 #include <P1AM.h>
 #pragma once
 
+/** @class TimerManager
+ *  @brief A class used internally to manage multiple timers
+ */
 class TimerManager {
 public: 
     static TimerManager& instance() {
@@ -44,3 +47,4 @@ private:
 };
 
 #define Timer TimerManager::instance()
+

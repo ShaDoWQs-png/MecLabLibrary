@@ -1,4 +1,5 @@
 #include "util/Managers.hpp"
+#include <P1AM.h>
 #pragma once
 
 /**
@@ -28,16 +29,22 @@ class Motor {
          * @brief Moves the motor forward
          */
         void forward();
+        /** @param durationMs The duration to move the motor forward in milliseconds */
+        void forward(int durationMs);
 
         /**
          * @brief Moves the motor in reverse
          */
         void reverse();
+        /** @param durationMs The duration to move the motor in reverse in milliseconds */
+        void reverse(int durationMs);
 
         /**
          * @brief Stops the motor
          */
         void stop();
+        /** @param durationMs The duration to stop the motor in milliseconds */
+        void stop(int durationMs);
 
         /**
          * @brief Returns the current state of the motor (forward, reverse, or off)
@@ -46,6 +53,7 @@ class Motor {
         MotorState direction();
 
     private:
+        int _timerHandle = -1;
         int _slot;
         int _port; 
         int _revPort;
@@ -98,11 +106,15 @@ class Solenoid {
          * @brief Extends the solenoid
          */
         void extend();
+        /** @param durationMs The duration to extend the solenoid in milliseconds */
+        void extend(int durationMs);
 
         /**
          * @brief Retracts the solenoid
          */
         void retract();
+        /** @param durationMs The duration to retract the solenoid in milliseconds */
+        void retract(int durationMs);
 
         /**
          * @brief Checks if the solenoid is currently extended
@@ -116,6 +128,7 @@ class Solenoid {
         int _slot;
         int _port;
         bool _isExtended;
+        int _timerHandle = -1;
 };
 
 /**
@@ -191,6 +204,7 @@ class PneumaticValve {
     ReedSwitch* reedRet = nullptr;
     ReedSwitch* reedExt = nullptr;
     ValveState state;
+    int _timerHandle = -1;
     bool reedSwitches = false;
     unsigned long stateTimer;
     ValveState lastMoveCall = ValveState::OFF;
@@ -228,11 +242,15 @@ class PneumaticValve {
      * @brief Extends the valve
      */
     void extend();
+    /** @param durationMs The duration to extend the valve in milliseconds */
+    void extend(int durationMs);
 
     /**
      * @brief Retracts the valve
      */
     void retract();
+    /** @param durationMs The duration to retract the valve in milliseconds */
+    void retract(int durationMs);
 
     /**
      * @brief Turns the valve off

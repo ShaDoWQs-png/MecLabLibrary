@@ -322,4 +322,7 @@ class SuctionArm {
         void transferObject();
 };
 
-bool getButtonPress(int slot, int port);
+namespace Function {
+    bool getButtonPress(int slot, int port);
+    void wait(int durationMs, std::function<void()> callback);
+}

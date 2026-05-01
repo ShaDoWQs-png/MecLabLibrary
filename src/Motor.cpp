@@ -11,14 +11,15 @@ void Motor::forward() {
 }
 
 void Motor::forward(int durationMs) {
+  MotorState preState = state;
   Timer.cancel(_timerHandle); // Cancel any preexisting timer
   
   P1.writeDiscrete(LOW, _slot, _revPort);
   P1.writeDiscrete(HIGH, _slot, _port);
   state = MotorState::FORWARD;
 
-  _timerHandle = Timer.start(durationMs, [this]() {
-    this->stop();
+  _timerHandle = Timer.start(durationMs, [this, preState]() {
+    preState == MotorState::REVERSE ? this->reverse() : this->stop();
   });
 }
 

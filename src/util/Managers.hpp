@@ -26,7 +26,7 @@ public:
 
     void tick() {
         for (int i = 0; i < MAX_TIMERS; i++) {
-            if(!_timers[i].active && (millis() - _timers[i].startTime >= _timers[i].duration)) {
+            if(_timers[i].active && (millis() - _timers[i].startTime >= _timers[i].duration)) {
                 _timers[i].active = false;
                 _timers[i].callback();
             }
@@ -41,7 +41,7 @@ private:
         std::function<void()> callback;
     };
 
-    static constexpr int MAX_TIMERS = 15;
+    static constexpr int MAX_TIMERS = 10;
     Timer _timers[MAX_TIMERS] = {};
     TimerManager() = default;
 };
